@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>清除示例卡牌</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .result {
+      background-color: #f5f5f5;
+      border-left: 4px solid #4f46e5;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .success {
+      border-left-color: #10b981;
+    }
+    .error {
+      border-left-color: #ef4444;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .back {
+      display: inline-block;
+      margin-top: 20px;
+      color: #4f46e5;
+      text-decoration: none;
+    }
+    .back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>清除示例卡牌</h1>
+  <p>点击下面的按钮清除所有示例卡牌（deck="sample"）。</p>
+  
+  <button id="clearBtn">清除示例卡牌</button>
+  
+  <div id="result" class="result" style="display: none;"></div>
+  
+  <a href="/" class="back">返回主页</a>
+  
+  <script>
+    document.getElementById('clearBtn').addEventListener('click', function() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      
+      try {
+        // 获取当前存储的卡牌数据
+        const CARDS_STORAGE_KEY = 'agricola_helper_cards';
+        const cardsData = localStorage.getItem(CARDS_STORAGE_KEY);
+        
+        if (!cardsData) {
+          resultDiv.innerHTML = '没有找到卡牌数据';
+          resultDiv.className = 'result error';
+          return;
+        }
+        
+        // 解析卡牌数据
+        const cards = JSON.parse(cardsData);
+        const originalCount = cards.length;
+        
+        // 过滤掉示例卡牌
+        const filteredCards = cards.filter(card => card.deck !== 'sample');
+        const removedCount = originalCount - filteredCards.length;
+        
+        // 保存过滤后的卡牌
+        localStorage.setItem(CARDS_STORAGE_KEY, JSON.stringify(filteredCards));
+        
+        resultDiv.innerHTML = `
+          <p>操作成功！</p>
+          <p>原有卡牌数量: ${originalCount}</p>
+          <p>移除示例卡牌: ${removedCount}</p>
+          <p>剩余卡牌数量: ${filteredCards.length}</p>
+        `;
+        resultDiv.className = 'result success';
+      } catch (error) {
+        resultDiv.innerHTML = `处理卡牌数据时出错: ${error.message}`;
+        resultDiv.className = 'result error';
+      }
+    });
+  </script>
+</body>
+</html> 
