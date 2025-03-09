@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>欢迎使用 Agricola卡牌助手</title>
+  <style>
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .step {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+    
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+    
+    .footer a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .screenshot {
+      max-width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>欢迎使用 Agricola卡牌助手</h1>
+      <p>感谢您安装 Agricola卡牌助手！这个浏览器扩展可以帮助您从 Board Game Arena 的 Agricola 游戏回放页面提取卡牌数据，并将其存储到本地数据库中，方便您随时查询和管理。</p>
+      
+      <h2>使用方法</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>访问 Agricola 游戏回放页面</h3>
+            <p>在 Board Game Arena 上打开一个 Agricola 游戏回放页面。</p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>点击插件图标</h3>
+            <p>点击浏览器工具栏中的 Agricola卡牌助手图标，打开插件弹出窗口。</p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>提取卡牌数据</h3>
+            <p>在弹出窗口中点击"提取当前页面卡牌"按钮，插件将自动提取页面上所有可见的卡牌数据，并将新卡牌存储到本地数据库中。</p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>管理卡牌数据</h3>
+            <p>点击"打开卡牌管理器"按钮，可以打开卡牌管理器页面，在这里您可以搜索、过滤和查看所有已收集的卡牌数据。</p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>导出数据</h3>
+            <p>如果需要备份数据，可以点击"导出数据库为JSON"按钮，将所有卡牌数据导出为JSON文件。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>特点</h2>
+      <ul>
+        <li><strong>增量更新</strong>：只会添加数据库中还不存在的卡牌，避免重复数据</li>
+        <li><strong>资源图标识别</strong>：能够识别卡牌描述中的资源图标并转换为文本表示</li>
+        <li><strong>本地存储</strong>：所有数据存储在浏览器的本地数据库中，无需网络连接</li>
+        <li><strong>强大的搜索功能</strong>：支持按名称、描述、类型、牌组等多种条件搜索卡牌</li>
+        <li><strong>数据统计</strong>：提供卡牌数据的统计信息</li>
+      </ul>
+    </div>
+    
+    <div class="footer">
+      <p>Agricola卡牌助手 v1.0.0 | <a href="https://github.com/yourusername/Agricola_Healper" target="_blank">查看源码</a></p>
+    </div>
+  </div>
+</body>
+</html> 

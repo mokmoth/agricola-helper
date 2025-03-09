@@ -1,10 +1,10 @@
-# Agricola 卡牌助手
+# Agricola卡牌助手 - 浏览器扩展
 
-这是一个用于提取、管理和查询 Agricola 桌游卡牌数据的浏览器扩展。
+这是一个浏览器扩展，用于从 Board Game Arena 的 Agricola 游戏回放页面提取卡牌数据，并将其存储到本地数据库中。
 
 ## 功能特点
 
-- **一键提取**：从 Board Game Arena 的 Agricola 游戏回放页面提取卡牌数据
+- **一键提取**：只需点击一个按钮，即可提取当前页面的所有卡牌数据
 - **智能识别**：自动识别中英文卡牌名称和描述
 - **数据完整性**：确保只保存完整的卡牌数据（包含ID、类型、中文名称和中文描述）
 - **增量更新**：只会添加数据库中还不存在的卡牌，避免重复数据
@@ -12,31 +12,6 @@
 - **卡牌管理**：提供简洁的卡牌管理界面，支持搜索、过滤和排序
 - **数据导出导入**：支持导出/导入 JSON 数据，方便备份和共享
 - **调试功能**：提供详细的调试信息，帮助排查问题
-
-## 项目结构
-
-```
-browser-extension/           # 浏览器扩展主目录
-├── manifest.json            # 扩展配置文件
-├── popup.html               # 扩展弹出窗口HTML
-├── popup.js                 # 扩展弹出窗口脚本
-├── content.js               # 内容脚本，负责与页面交互
-├── background.js            # 后台脚本
-├── agricolaCardDB.js        # IndexedDB 数据库实现
-├── card-manager.js          # 卡牌管理器核心功能
-├── simple-card-manager.html # 简化版卡牌管理器界面
-├── simple-card-manager.js   # 简化版卡牌管理器脚本
-├── import-handler.js        # 导入处理器
-├── extractCardData.js       # 独立的卡牌数据提取脚本
-├── welcome.html             # 欢迎页面
-├── icons/                   # 图标目录
-│   ├── icon16.png           # 16x16 图标
-│   ├── icon48.png           # 48x48 图标
-│   ├── icon128.png          # 128x128 图标
-│   ├── create_icons.html    # 图标生成工具
-│   └── generate_icons.js    # 图标生成脚本
-└── README.md                # 扩展说明文档
-```
 
 ## 安装方法
 
@@ -85,26 +60,29 @@ browser-extension/           # 浏览器扩展主目录
 1. 在卡牌管理器页面点击"导出数据"按钮，将所有卡牌数据导出为JSON文件
 2. 需要恢复数据时，点击"导入数据"按钮，选择之前导出的JSON文件
 
-## 卡牌数据结构
+## 文件结构
 
-```json
-{
-  "id": "A129_Swagman",
-  "numbering": "A129",
-  "type": "occupation",
-  "zhName": "流浪汉",
-  "zhDesc": "每当你使用农场扩建或小麦种子行动格后，你可以立即将此家庭成员移至对应的另一个行动格上并使用它，即使它已被占用（不可反复移动）。",
-  "name": "Swagman",
-  "description": "Whenever you use the Farm Expansion or Grain Seeds action space, you may immediately move this person to the corresponding other action space and use it, even if it is already occupied (no repeated moving).",
-  "category": "BoosterCategory",
-  "categoryText": "增强类别",
-  "vp": 0,
-  "costText": "",
-  "costResources": [],
-  "prerequisiteText": "",
-  "players": "3++",
-  "deck": "A"
-}
+```
+browser-extension/           # 浏览器扩展主目录
+├── manifest.json            # 扩展配置文件
+├── popup.html               # 扩展弹出窗口HTML
+├── popup.js                 # 扩展弹出窗口脚本
+├── content.js               # 内容脚本，负责与页面交互
+├── background.js            # 后台脚本
+├── agricolaCardDB.js        # IndexedDB 数据库实现
+├── card-manager.js          # 卡牌管理器核心功能
+├── simple-card-manager.html # 简化版卡牌管理器界面
+├── simple-card-manager.js   # 简化版卡牌管理器脚本
+├── import-handler.js        # 导入处理器
+├── extractCardData.js       # 独立的卡牌数据提取脚本
+├── welcome.html             # 欢迎页面
+├── icons/                   # 图标目录
+│   ├── icon16.png           # 16x16 图标
+│   ├── icon48.png           # 48x48 图标
+│   ├── icon128.png          # 128x128 图标
+│   ├── create_icons.html    # 图标生成工具
+│   └── generate_icons.js    # 图标生成脚本
+└── README.md                # 扩展说明文档
 ```
 
 ## 独立脚本使用方法
@@ -112,7 +90,7 @@ browser-extension/           # 浏览器扩展主目录
 如果您不想安装浏览器扩展，也可以使用独立的提取脚本：
 
 1. 在 Board Game Arena 的 Agricola 游戏回放页面打开浏览器控制台(F12)
-2. 复制粘贴 `browser-extension/extractCardData.js` 的内容到控制台并运行
+2. 复制粘贴 `extractCardData.js` 的内容到控制台并运行
 3. 脚本将自动提取页面上所有可见的卡牌数据并下载为JSON文件
 
 ## 注意事项

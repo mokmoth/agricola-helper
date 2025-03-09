@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricola卡牌管理器 (简化版)</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        
+        #status-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            width: 300px;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .card-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        
+        .card-type-occupation {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        
+        .card-type-minor {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+        
+        .card-type-major {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        
+        .card-type-action {
+            background-color: #f3e5f5;
+            color: #4a148c;
+        }
+        
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .card-meta span {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .card-description {
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+        
+        .search-container h3 {
+            margin-top: 0;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .search-form input, .search-form select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-container select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+        
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button.danger {
+            background-color: #f44336;
+        }
+        
+        button.danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        button.warning {
+            background-color: #ff9800;
+        }
+        
+        button.warning:hover {
+            background-color: #f57c00;
+        }
+        
+        .import-export-container {
+            margin: 20px 0;
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+        
+        .import-export-container h3 {
+            margin-top: 0;
+        }
+        
+        .import-export-container input[type="file"] {
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .import-export-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .import-btn {
+            background-color: #4CAF50;
+        }
+        
+        #cancel-import-btn {
+            background-color: #f44336;
+        }
+        
+        .stats-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .stat-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        #debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        #debug-info div {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        #debug-info div:last-child {
+            border-bottom: none;
+        }
+        
+        .button-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Agricola卡牌管理器 (简化版)</h1>
+    
+    <div id="status-message" style="display: none;"></div>
+    
+    <div class="stats-container">
+        <h3>数据库统计</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <strong>总卡牌数</strong>
+                <span id="total-cards">0</span>
+            </div>
+            <div class="stat-item">
+                <strong>职业卡</strong>
+                <span id="occupation-cards">0</span>
+            </div>
+            <div class="stat-item">
+                <strong>小改良卡</strong>
+                <span id="minor-cards">0</span>
+            </div>
+            <div class="stat-item">
+                <strong>大改良卡</strong>
+                <span id="major-cards">0</span>
+            </div>
+            <div class="stat-item">
+                <strong>行动卡</strong>
+                <span id="action-cards">0</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="button-container">
+        <button id="load-from-storage">从存储加载数据</button>
+        <button id="export-btn">导出数据</button>
+        <button id="import-btn">导入数据</button>
+        <button id="clear-btn" class="danger">清空数据库</button>
+        <button id="clean-btn" class="warning">清理不完整卡牌</button>
+        <button id="show-debug">显示调试信息</button>
+    </div>
+    
+    <!-- 调试信息区域 -->
+    <div id="debug-info" style="display: none; margin-top: 20px; padding: 15px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; white-space: pre-wrap; max-height: 400px; overflow-y: auto; font-size: 14px; line-height: 1.5; color: #333;">
+        <div style="text-align: center; padding: 10px; color: #666; border-bottom: 1px solid #ddd; margin-bottom: 10px;">
+            --- 调试信息将显示在这里 ---
+        </div>
+    </div>
+    
+    <div id="import-container" class="import-export-container" style="display: none;">
+        <h3>导入JSON数据</h3>
+        <form id="import-form">
+            <div style="margin-bottom: 15px;">
+                <label for="import-file">选择JSON文件:</label>
+                <input type="file" id="import-file" accept=".json" required>
+            </div>
+            <div>
+                <button type="button" id="process-import-btn" class="import-btn">处理导入</button>
+                <button type="button" id="cancel-import-btn">取消</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="search-container">
+        <h3>搜索和筛选</h3>
+        <div class="search-form">
+            <input type="text" id="search-input" placeholder="搜索卡牌名称或描述...">
+            <button id="search-btn">搜索</button>
+            <button id="reset-search">重置</button>
+        </div>
+        <div class="filter-container">
+            <select id="type-filter">
+                <option value="">所有类型</option>
+                <option value="occupation">职业卡</option>
+                <option value="minor">小改良卡</option>
+                <option value="major">大改良卡</option>
+                <option value="action">行动卡</option>
+            </select>
+            
+            <select id="deck-filter">
+                <option value="">所有牌组</option>
+                <option value="A">A牌组</option>
+                <option value="B">B牌组</option>
+                <option value="C">C牌组</option>
+                <option value="D">D牌组</option>
+                <option value="E">E牌组</option>
+                <option value="I">I牌组</option>
+                <option value="K">K牌组</option>
+            </select>
+            
+            <select id="sort-by">
+                <option value="name">按名称排序</option>
+                <option value="type">按类型排序</option>
+                <option value="deck">按牌组排序</option>
+            </select>
+        </div>
+    </div>
+    
+    <h2>卡牌列表</h2>
+    <div class="card-container" id="card-list">
+        <!-- 卡牌将在这里动态生成 -->
+    </div>
+    
+    <!-- 引用外部JavaScript文件 -->
+    <script src="agricolaCardDB.js"></script>
+    <script src="card-manager.js"></script>
+    <script src="simple-card-manager.js"></script>
+    <script src="import-handler.js"></script>
+</body>
+</html>

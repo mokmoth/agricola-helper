@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agricola卡牌助手图标生成器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    canvas {
+      border: 1px solid #ddd;
+      margin: 10px;
+    }
+    
+    .icons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Agricola卡牌助手图标生成器</h1>
+  
+  <div class="icons-container">
+    <div class="icon-item">
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <p>16x16</p>
+    </div>
+    
+    <div class="icon-item">
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <p>48x48</p>
+    </div>
+    
+    <div class="icon-item">
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <p>128x128</p>
+    </div>
+  </div>
+  
+  <button id="download-icons">下载图标</button>
+  
+  <script>
+    // 绘制图标函数
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      // 背景
+      ctx.fillStyle = '#3498db';
+      ctx.fillRect(0, 0, size, size);
+      
+      // 卡牌形状
+      const cardWidth = size * 0.7;
+      const cardHeight = size * 0.8;
+      const cardX = (size - cardWidth) / 2;
+      const cardY = (size - cardHeight) / 2;
+      
+      ctx.fillStyle = 'white';
+      ctx.fillRect(cardX, cardY, cardWidth, cardHeight);
+      
+      // 卡牌边框
+      ctx.strokeStyle = '#2c3e50';
+      ctx.lineWidth = Math.max(1, size * 0.02);
+      ctx.strokeRect(cardX, cardY, cardWidth, cardHeight);
+      
+      // 卡牌标题线
+      const titleLineY = cardY + cardHeight * 0.2;
+      ctx.beginPath();
+      ctx.moveTo(cardX, titleLineY);
+      ctx.lineTo(cardX + cardWidth, titleLineY);
+      ctx.stroke();
+      
+      // 卡牌内容线
+      const contentLineCount = 3;
+      const contentLineSpacing = cardHeight * 0.15;
+      const contentLineStartY = titleLineY + contentLineSpacing;
+      
+      ctx.strokeStyle = '#bdc3c7';
+      ctx.lineWidth = Math.max(1, size * 0.01);
+      
+      for (let i = 0; i < contentLineCount; i++) {
+        const lineY = contentLineStartY + i * contentLineSpacing;
+        const lineWidth = cardWidth * (0.9 - i * 0.15);
+        
+        ctx.beginPath();
+        ctx.moveTo(cardX + (cardWidth - lineWidth) / 2, lineY);
+        ctx.lineTo(cardX + (cardWidth - lineWidth) / 2 + lineWidth, lineY);
+        ctx.stroke();
+      }
+      
+      // 字母A
+      if (size >= 48) {
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = `bold ${size * 0.25}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('A', size / 2, cardY + cardHeight * 0.1);
+      }
+    }
+    
+    // 绘制所有图标
+    function drawAllIcons() {
+      drawIcon(document.getElementById('icon16'), 16);
+      drawIcon(document.getElementById('icon48'), 48);
+      drawIcon(document.getElementById('icon128'), 128);
+    }
+    
+    // 下载图标
+    function downloadIcon(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    // 下载所有图标
+    function downloadAllIcons() {
+      downloadIcon(document.getElementById('icon16'), 'icon16.png');
+      downloadIcon(document.getElementById('icon48'), 'icon48.png');
+      downloadIcon(document.getElementById('icon128'), 'icon128.png');
+    }
+    
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      drawAllIcons();
+      
+      document.getElementById('download-icons').addEventListener('click', downloadAllIcons);
+    });
+  </script>
+</body>
+</html> 
