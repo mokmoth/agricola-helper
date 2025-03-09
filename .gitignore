@@ -1,0 +1,29 @@
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器文件
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# 临时文件
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# 浏览器扩展打包文件
+*.zip
+*.crx
+*.pem
+
+# Node.js (如果将来需要)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json 
